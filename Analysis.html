@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNA Reverse Complement & Sequence Analyzer</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            height: auto;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin: 40px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        textarea {
+            width: 96.5%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        select {
+            padding: 6px;
+            border-radius: 4px;
+            border: 1px solid black;
+            background-color: white;
+            color: black;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 50px;
+            margin-bottom: 20px;
+        }
+        .analyze {
+            padding: 10px;
+            height: auto;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background-color: #ccc;
+            color: black;
+            cursor: pointer;
+            font-size: 14px;
+            margin: auto;
+        }
+        button {
+            padding: 7px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background-color: #b83c32;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 50px;
+            margin-bottom: 20px;
+        }
+
+        button:hover {
+            background-color: #5abe64;
+        }
+        .flex-boxes {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .box {
+            flex: 1;
+            margin-right: 10px;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .box:last-child {
+            margin-right: 0;
+        }
+        .chart-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DNA Reverse Complement & Sequence Analyzer</h1>
+        
+        <!-- Enter DNA Sequence -->
+        <label for="sequenceName">Enter a name for the sequence:</label>
+        <textarea id="sequenceName" rows="1" placeholder="Sequence Name"></textarea>
+
+        <label for="sequence">Enter DNA Sequence:</label>
+        <textarea id="sequence" rows="4" placeholder="ATGCGA..."></textarea>
+
+        <!-- Analysis Button and Analysis Boxes -->
+        <div class="flex-boxes">
+           
+            <div class="box" id="gc-content">%GC: --</div>
+            <div class="box" id="melting-temp">Melting Temp (Tm): --</div>
+            <div class="box" id="delta-g">ΔG: --</div> 
+            <button class="analyze" onclick="Analysis()">Analyze Seq.</button>
+        </div>
+
+        <!-- GC% Plot -->
+        <div class="chart-container">
+            <canvas id="gcChart"></canvas>
+        </div>
+
+        <!-- Select Operation -->
+        <div class="Select Operation>
+        <label for="operation">Select Operation:</label>
+        <select id="operation">
+            <option value="reverse">Reverse</option>
+            <option value="reverse_complement">Reverse Complement</option>
+        </select>
+        <button onclick="processSequence()">Generate</button>
+        </div>
+        <!-- Result Display -->
+        <div class="output">
+        <textarea id="result" class="result-textarea" placeholder="Output" readonly></textarea>
+        </div>
+</div>
+    <script>
+        function Analysis() {
+            const sequence = document.getElementById('sequence').value.toUpperCase().trim();
+            if (sequence.length === 0) {
+                alert("Please enter a valid DNA sequence.");
+                return;
+            }
+
+            // Perform automatic analysis
+            calculateGCContent(sequence);
+            calculateMeltingTemperature(sequence);
+            calculateDeltaG(sequence);
+            plotGCContent(sequence);
+        }
+
+        function calculateGCContent(sequence) {
+            const gcCount = (sequence.match(/[GC]/g) || []).length;
+            const gcPercentage = (gcCount / sequence.length) * 100;
+            document.getElementById('gc-content').innerHTML = `%GC: ${gcPercentage.toFixed(2)}%`;
+        }
+
+        function calculateMeltingTemperature(sequence) {
+            const A = (sequence.match(/A/g) || []).length;
+            const T = (sequence.match(/T/g) || []).length;
+            const G = (sequence.match(/G/g) || []).length;
+            const C = (sequence.match(/C/g) || []).length;
+
+            // Approximate nearest-neighbor melting temperature (Tm)
+            const Tm = 64.9 + 41 * (G + C - 16.4) / (A + T + G + C);
+            document.getElementById('melting-temp').innerHTML = `Melting Temp (Tm): ${Tm.toFixed(2)}°C`;
+        }
+
+        function calculateDeltaG(sequence) {
+            // Basic approximation of Gibbs free energy, where more GCs reduce energy
+            const gcContent = (sequence.match(/[GC]/g) || []).length;
+            const deltaG = gcContent * -2.0; // Approximation, can be adjusted with more accurate models
+            document.getElementById('delta-g').innerHTML = `ΔG: ${deltaG.toFixed(2)} kcal/mol`;
+        }
+
+        function plotGCContent(sequence) {
+            const windowSize = 20;
+            const stepSize = 5;
+            const gcContent = [];
+            const labels = [];
+
+            for (let i = 0; i <= sequence.length - windowSize; i += stepSize) {
+                const window = sequence.slice(i, i + windowSize);
+                const gcCount = (window.match(/[GC]/g) || []).length;
+                const gcPercentage = (gcCount / windowSize) * 100;
+                gcContent.push(gcPercentage);
+            
+                const  midpoint = i + Math.floor(windowSize / 2);
+                labels.push(midpoint + 1); // +1 to make it 1-indexed
+ }
+  // Ensure the first and last positions (1 and sequence length) are included
+    if (labels[0] !== 1) {
+        labels.unshift(1); // Add position 1 at the beginning
+        gcContent.unshift(null); // Add a null value to maintain data alignment
+    }
+    if (labels[labels.length - 1] !== sequence.length) {
+        labels.push(sequence.length); // Add last nucleotide position at the end
+        gcContent.push(null); // Add a null value to maintain data alignment
+    }
+            const ctx = document.getElementById('gcChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels, // X-axis labeled by sequence position (midpoint of window)
+                    datasets: [{
+                        label: 'GC%',
+                        data: gcContent,
+                        borderColor: 'rgba(184, 60, 50, 0.5)',
+                        fill: true,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: { title: { display: true, text: 'Nucleotide Position' } },
+                        y: { title: { display: true, text: 'GC%' }, min: 0, max: 100 }
+                    }
+                }
+            });
+        }
+
+        function processSequence() {
+            const sequence = document.getElementById('sequence').value.toUpperCase();
+            const operation = document.getElementById('operation').value;
+            let result = '';
+
+            switch (operation) {
+                case 'reverse':
+                    result = sequence.split('').reverse().join('');
+                    break;
+                case 'reverse_complement':
+                    result = reverseComplement(sequence);
+                    break;
+            }
+
+            document.getElementById('result').value = result;
+        }
+
+        function reverseComplement(sequence) {
+            const complement = {
+                A: 'T', T: 'A', C: 'G', G: 'C',
+                W: 'W', S: 'S', M: 'K', K: 'M',
+                R: 'Y', Y: 'R', B: 'V', D: 'H',
+                H: 'D', V: 'B', N: 'N'
+            };
+            return sequence.split('').reverse().map(base => complement[base] || base).join('');
+        }
+    </script>
+</body>
+</html>
