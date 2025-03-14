@@ -109,9 +109,9 @@
 
         <!-- Analysis Button and Analysis Boxes -->
         <div class="flex-boxes">
-           
+            <div class="box" id="length">Length: --</div>
             <div class="box" id="gc-content">%GC: --</div>
-            <div class="box" id="melting-temp">Melting Temp (Tm): --</div>
+            <div class="box" id="melting-temp">Tm: --</div>
             <div class="box" id="delta-g">ΔG: --</div> 
             <button class="analyze" onclick="Analysis()">Analyze Seq.</button>
         </div>
@@ -144,10 +144,17 @@
             }
 
             // Perform automatic analysis
+            calculateLength(sequence);
             calculateGCContent(sequence);
             calculateMeltingTemperature(sequence);
             calculateDeltaG(sequence);
-            plotGCContent(sequence);
+            plotGCContent(sequence);    
+        }
+
+        function calculateLength(sequence) {
+            const length = sequence.length;
+            document.getElementById('length').innerHTML = `Length: ${length} nt`;
+            
         }
 
         function calculateGCContent(sequence) {
@@ -164,7 +171,7 @@
 
             // Approximate nearest-neighbor melting temperature (Tm)
             const Tm = 64.9 + 41 * (G + C - 16.4) / (A + T + G + C);
-            document.getElementById('melting-temp').innerHTML = `Melting Temp (Tm): ${Tm.toFixed(2)}°C`;
+            document.getElementById('melting-temp').innerHTML = `Tm: ${Tm.toFixed(2)}°C`;
         }
 
         function calculateDeltaG(sequence) {
