@@ -50,16 +50,20 @@
         border: 1px solid #ccc;
     }
     select, input {
-        padding: 6px;
+        width: 50px;
         border-radius: 4px;
         border: 1px solid #edecec;
         background-color: #edecec;
         color: black;
         cursor: pointer;
         font-size: 14px;
-        margin-top: 0px;
-        margin-bottom: 0px;
+        margin-right: 15px;
+        margin-left: 5px;
+        padding: 3px;
+        text-align: center;
+        
     }
+
     .analyze {
         padding: 10px;
         height: auto;
@@ -80,7 +84,7 @@
         cursor: pointer;
         font-size: 14px;
         margin-top: 0px;
-        margin-bottom: 20px;
+        margin-bottom: 0px;
     }
 
     button:hover {
@@ -88,8 +92,14 @@
     }
     .flex-box {
         display: flex;
-        justify-content: space-between;
+        justify-content: left;
         margin-bottom: 20px;
+        align-items: center;
+        text-align: center;
+    }
+
+    .flex-box label {
+        margin-bottom: 0px;    
     }
 
     .grid-box {
@@ -122,7 +132,7 @@
         margin-top: 0px;
         border: 1px solid #ccc;
         background-color: white;
-        border-radius: 10px;
+        border-radius: 4px;
     }
     
 
@@ -141,26 +151,9 @@
     <textarea id="dnaSequence" rows="4" placeholder="ATGCGA..."></textarea>
 
     <div class="flex-box">
-      <div class="grid-box">
-        <label>Fragmentation by:</label>
-        <select id="method" onchange="toggleMethod()">
-          <option value="number">Number of Fragments</option>
-          <option value="length">Fragment Length</option>
-        </select>
-      </div>
-
-      <div class="grid-box">
-          <div id="byNumber">
-            <label>Number of Fragments:</label>
-            <input type="number" id="numFragments">
-          </div>
-          <div id="byLength" style="display: none;">
-            <label>Fragment Length (nt):</label>
-            <input type="number" id="fragLength">
-          </div>
-      </div>
-
-      <div class="grid-box">
+        <label>Number of Fragments:</label>
+        <input type="number" id="numFragments">
+    
         <label>Overlap Length (nt):</label>
         <select id="overlap">
           <option value="20">20</option>
@@ -168,94 +161,99 @@
           <option value="60">60</option>
           <option value="80">80</option>
         </select>
-      </div>
-    </div>
+    
 
-    <div class="flex-box">
+    
       <button style="margin-left: auto; margin-right: 0px;" onclick="generateFragments()">Generate Fragments</button>
       <div id="errorMsg" class="error"></div>
     </div>
 
   
     <div id="result" class="result-box" style="display:none;"></div>
-    </div>
-    
   </div>
-</div>
 
 
-  <script>
-    function toggleMethod() {
-      const method = document.getElementById('method').value;
-      document.getElementById('byNumber').style.display = (method === 'number') ? 'block' : 'none';
-      document.getElementById('byLength').style.display = (method === 'length') ? 'block' : 'none';
-    }
 
-    function generateFragments() {
-      const sequenceName = document.getElementById('sequenceName').value.trim();
-      const sequenceInput = document.getElementById('dnaSequence').value;
-      let dna = sequenceInput.replace(/[^ATCGatcg]/g, '').toUpperCase(); // Clean and validate
+<script>
+    function generateFragments () {
+      
+        // ── 1. INPUT & VALIDATION ──────────────────────────────────────────────
+        const sequenceName = document.getElementById('sequenceName').value.trim() || 'sequence';
+        const sequenceRaw = document.getElementById('dnaSequence').value;
+        const dna = sequenceRaw.replace(/[^ATCGatcg]/g, '').toUpperCase();
 
-      const errorDiv = document.getElementById('errorMsg');
-      const resultDiv = document.getElementById('result');
-      errorDiv.textContent = "";
-      resultDiv.style.display = "none";
+        const errorDiv = document.getElementById('errorMsg');
+        const resultDiv = document.getElementById('result');
+        errorDiv.textContent = '';
+        resultDiv.style.display = 'none';
 
-      if (!dna || dna.length === 0) {
-        errorDiv.textContent = "Please enter a valid DNA sequence.";
-        return;
-      }
+        if (!dna) {
+            errorDiv.textContent = 'Please enter a valid DNA sequence.';
+            return;
+        }
 
-      const totalLength = dna.length;
-      const method = document.getElementById('method').value;
-      const overlap = parseInt(document.getElementById('overlap').value);
-      let numFragments, fragLength;
+        const totalLength = dna.length;
+        const numFragments = parseInt(document.getElementById('numFragments').value, 10);
+        const overlap = parseInt(document.getElementById('overlap').value, 10);
 
-      if (method === 'number') {
-        numFragments = parseInt(document.getElementById('numFragments').value);
-        fragLength = Math.floor(totalLength / numFragments);
-      } else {
-        fragLength = parseInt(document.getElementById('fragLength').value);
-        numFragments = Math.floor(totalLength / fragLength);
-      }
+        if (!numFragments || numFragments <= 0) {
+            errorDiv.textContent = 'Please enter a valid number of fragments.';
+            return;
+        }
 
-      if (fragLength < 350) {
-        errorDiv.textContent = "Error: Fragment length must be at least 400 nt.";
-        return;
-      }
+        const coreLength = Math.floor(totalLength / numFragments);
+        if (coreLength < 300) {
+            errorDiv.textContent = 'Fragment length must be ≥ 300 nt.';
+            return;
+        }
 
-      const fragments = [];
+        if (overlap >= coreLength) {
+            errorDiv.textContent = 'Overlap must be smaller than fragment size.';
+            return;
+        }
+           
 
-      for (let i = 0; i < numFragments; i++) {
-        let start = i * (fragLength - overlap);  // step forward, accounting for overlap
-        let end = start + fragLength;
+      // ── 2. GENERATE CORE FRAGMENTS EQUALLY ─────────────────────────────────
+      const boundaries = [];
+        for (let i = 0; i <= numFragments; i++) {
+            boundaries.push(Math.round((totalLength * i) / numFragments));
+        }
 
-          // Clamp to sequence bounds
-          start = Math.max(0, start);
-          end = Math.min(totalLength, end);
+        const leftO = Math.floor(overlap / 2);
+        const rightO = overlap - leftO;
 
-          const fragSeq = dna.slice(start, end);
+        const fragments = [];
+        for (let i = 0; i < numFragments; i++) {
+            let start = boundaries[i];
+            let end = boundaries[i + 1];
 
-          fragments.push({
+            if (i > 0) start = Math.max(0, start - leftO);
+            if (i < numFragments - 1) end = Math.min(totalLength, end + rightO);
+
+            fragments.push({
             name: `Fragment ${i + 1}`,
             start: start + 1,
             end: end,
-            sequence: fragSeq
-          });
+            sequence: dna.slice(start, end)
+            });
         }
 
-      // Display
+      // ── 3. DISPLAY OUTPUT ──────────────────────────────────────────────────
       resultDiv.innerHTML = `
         <h2>Fragmentation Results</h2>
-        <p>Total Sequence Length: ${totalLength} nt</p>
-        <p>Number of Fragments: ${numFragments}</p>
-        <p>Overlap: ${overlap} nt</p>
-        <div>${fragments.map(f =>
-          `<div class="fragment"><strong>${sequenceName || "sequenceName"}_${f.name}</strong> (${f.start} - ${f.end}):<br><code>${f.sequence}</code></div>`
-        ).join('')}</div>
-      `;
-      resultDiv.style.display = "block";
+        <p>Total Sequence Length: <strong>${totalLength}</strong> nt</p>
+        <p>Number of Fragments: <strong>${numFragments}</strong></p>
+        <p>Overlap each junction: <strong>${overlap}</strong> nt</p>
+        <div>
+        ${fragments.map(f => `
+            <div class="fragment">
+            <strong>${sequenceName}_${f.name}</strong>
+            &nbsp;(${f.start} – ${f.end}; ${f.sequence.length} nt):<br>
+            <code>${f.sequence}</code>
+            </div>`).join('')}
+        </div>`;
+    resultDiv.style.display = 'block';
     }
-  </script>
+</script>
 </body>
 </html>
