@@ -10,60 +10,96 @@
             height: 1320px;
             margin: 0;
             padding: 0;
+            background-color: #f8f9fa;
         }
         header {
+            position: sticky;
+            top:0px;
+            scroll-padding-bottom:100px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 10px 20px;
-            background-color: #b83c32;
-            color: white;
-        }
-        header img {
-            max-height: 50px;
-        }
-        
-        h2{
-            font-size: 30px;
-            margin-bottom:30px;
+            background-color: white;
         }
 
-        h4{
-            font-size: 15px;
-            text-align: left;
-            margin-bottom: 0px;
-            margin-left: 5px;
-        }
-        
         nav a {
-            color: white;
+            color: #b83c32;
+            font-weight: 700;
             text-decoration: none;
             margin: 0 10px;
         }
         nav a:hover {
             text-decoration: underline;
         }
-        section {
-            padding: 40px 20px;
-            text-align: center;
+        
+        header img {
+            max-height: 50px;
+        }
+    
+        h1, h2, h3{
+            margin-bottom:30px;
+        }
+            
+        h1{
+            padding-top:30px;
+            font-size: 45px;
+        }
+        
+        h2{
+            padding-top:20px;
+            padding-bottom: 20px;
+            font-size: 45px;
         }
 
-        .services, .product {
+        h3{
+            padding-top:5px;
+            font-size: 15px;
+        }
+
+        h4{
+            font-size: 14px;
+            text-align: left;
+            margin-bottom: 0px;
+            margin-left: 5px;
+        }
+        
+        
+        section {
+            padding-top: 40px;
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-bottom: 80px;
+            text-align: center;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .tools {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
             text-align: center;
         }
         .card {
-            border: 1px solid #bd3535;
+            border: 1px solid white;
             border-radius: 8px;
+            background-color: white;
             padding: 20px;
             padding-bottom: 30px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+                        
         }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+        }
+
         footer {
-            background-color: #333;
+            background-color: #333333;
             font-size: 10px;
+            font-weight: 700;
             color: #ce5148;
             text-align: center;
             padding: 1px;
@@ -71,10 +107,10 @@
         }
 
         .contact-form input, .contact-form textarea {
-            width: 98.5%;
+            width: 100%;
             align-items: left;
             padding: 10px;
-            margin: 5px 0;
+            margin: 8px 0;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-family: Arial, sans-serif;
@@ -87,8 +123,10 @@
             border-radius: 4px;
             cursor: pointer;
         }
+        
         .contact-form button:hover {
-            background-color: #0056b3;
+            background-color: white;
+            color:#b83c32;
         }
 
         .pitch {
@@ -99,60 +137,78 @@
 
         .home {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
-            padding-right: 10%;
-            padding-left: 10%;
+            padding: 0 20px;
             text-align: center;
         }
 
         .home .card {
             align-items: center;
             width: auto;
-            border: 1px solid #bd3535;
-            border-radius: 8px;
-            padding-top: 20px;
+            padding-top: 10px;
             padding-bottom: 20px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border: 1px solid white;
+            border-radius: 8px;
             margin-top: 50px;
             margin-bottom: 50px;
             font-size: 24px;
+            background-color: white;
+        }
+        
+        .card img {
+            height: auto;
+            max-width: 100%;
+            object-fit: contain;
         }
 
         ::placeholder {
             color:#d1d1d1;
         }
 
+        .flex-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .grid-box {
+            flex: 1 1 300px;
+            padding: 10px;
+        }
+
+        
+
     </style>
 </head>
 <body>
     <!-- Header -->
     <header>
-        <img src="LOGO-1_RED.png" alt="Your Logo">
+        <img src="LOGO-1_WHITE.png" alt="Your Logo">
         <nav>
             <a href="#home">Home</a>
-            <a href="#services">Services</a>
+            <a href="#tools">Tools</a>
             <a href="#contact">Contact</a>
         </nav>
     </header>
 
     <!-- Home Section -->
-    <section id="home">
+    <section id="home" style="background-color:#fafafa; color:#2b2b2b">
         <h1 style="margin-bottom:30px; font-size:40px;">Control your DNA synthesis!</h1>
-        <p class="pitch" style="font-size:20px; font-weight:bold;"> Internalize the synthesis process maximizing control, flexibility, and cost efficiency.</p>
+        <p class="pitch" style="font-size:20px; font-weight: 700;"> Internalize the synthesis process maximizing control, flexibility, and cost efficiency.</p>
         <div class="home"> 
             <div class="card">
-                <h3>Oligo designs</h3>
-                <img src="Design.png" width="60%" height="9%" alt="Design">
+                <h3>Design oligos for assembly</h3>
+                <img src="Oligo_design.png" width="100%" height="100%" alt="Design">
             </div>
             <div class="card">
-                <h3 style="margin-top: 20px; margin-bottom: 0px;">Step-by-Step</h3>
-                <h3 style="margin-top: 0px; margin-bottom: 10px;">synthesis protocols</h3>
-                <img src="temp.png" width="18%" height="40%" alt="Design">
+                <h3>Obtain step-by-step protocols</h3>
+                
+                <img src="protocols.png" width="70%" height="70%" alt="Design">
             </div>
             <div class="card">
-                <h3>Pooling Files provided</h3>
-                <img src="pooling.png" width="30%" height="30%" alt="Pooling">
+                <h3>Obtain Pooling Files</h3>
+                <img src="pooling.png" width="55%" height="55%" alt="Pooling">
             </div>  
         </div>
         
@@ -162,24 +218,27 @@
         
     </section>
 
-    <!-- Services Section -->
-    <section id="services">
-        <h2>Services</h2>
-        <div class="services">
+    <!-- Tools Section -->
+    <section id="tools" style="background-color:#f5f5f5; color: #333333">
+        <h2>Tools</h2>
+        <div class="tools">
             <div class="card">
                 <h3>DNA Sequence analysis</h3>
                 <p>%GC plot -- Tm -- DeltaG</p>
                 <p><a href="https://www.oligotk.com/Analysis">Free tool</a></p>
             </div>
+            
             <div class="card">
-                <h3>Oligo Designer</h3>
-                <p>Simple Slicing -- Complex Slicing</p>
-            </div>
-              <div class="card">
                 <h3>Assembly Fragment Designer</h3>
                 <p>Generate different length fragments for Assembly</p>
                 <p><a href="https://www.oligotk.com/GA_Fragmenter">Free tool</a></p>
             </div>
+            
+            <div class="card">
+                <h3>Oligo Designer</h3>
+                <p>Simple Slicing -- Complex Slicing</p>
+            </div>
+              
             <div class="card">
                 <h3>Variant Library Designer</h3>
                 <p>Direct design -- Recycling design</p>
@@ -190,19 +249,30 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact">
-        <h2>Contact Us</h2>
-        <form class="contact-form" action="https://formsubmit.co/info@oligotk.com" method="POST">
-            <input type="hidden" name="_next" value="https://www.oligotk.com/Thank_you_page.html">
-            <h4>Name</h4>
-            <input type="text" name="name" placeholder="Your Name" required>
-            <h4>Email</h4>
-            <input type="email" name="email" placeholder="Your Email" required>
-            <h4>Message</h4>
-            <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
-            <button type="submit">Send Message</button>
-            <input type="text" name="_honey" style="display:none">
-        </form>
+    <section id="contact" style="background-color:#e5e9f0; color: #1e1e1e">
+        <div class="flex-box">
+        
+            <div class="grid-box">
+                    <h2 style="padding-top: 70px;">Contact Us</h2>
+                    <p>info@oligotk.com</p>
+            </div>
+        
+            <div class="grid-box">
+                <form class="contact-form" action="https://formsubmit.co/info@oligotk.com" method="POST">
+                    <input type="hidden" name="_next" value="https://www.oligotk.com/Thank_you_page.html">
+                    <h4>Name</h4>
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <h4>Insitution</h4>
+                    <input type="institution" name="institution" placeholder="Insitution Name" required>
+                    <h4>Email</h4>
+                    <input type="email" name="email" placeholder="Your Insitutional Email" required>
+                    <h4>Message</h4>
+                    <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+                    <button type="submit">Send Message</button>
+                    <input type="text" name="_honey" style="display:none">
+                </form>
+            </div>
+        </div>
     </section>
 
     <!-- Footer -->
