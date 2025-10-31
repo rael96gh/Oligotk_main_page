@@ -6,12 +6,14 @@
     <title>Oligotk</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Arial, Helvetica,sans-serif;
+            font-variant: normal;
             height: 1320px;
             margin: 0;
             padding: 0;
             background-color: #f8f9fa;
         }
+
         header {
             position: sticky;
             top: 0px;
@@ -95,7 +97,8 @@
         }
 
         h3{
-            padding-top:5px;
+            padding-top:2px;
+            margin-bottom: 10px;
             font-size: 18px;
         }
 
@@ -106,47 +109,148 @@
             margin-left: 5px;
         }
         
+         p {
+            font-size: 14px; 
+            padding: 0px;
+            margin: 2px 0px 5px 2px;
+        }
         
         section {
             padding-top: 40px;
             padding-left: 20px;
             padding-right: 20px;
-            padding-bottom: 40px;
+            padding-bottom: 10px;
             text-align: center;
             max-width: 1200px;
             margin: auto;
         }
 
-        .tools {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 10px;
-            text-align: center;
-        }
-        .card {
-            position: relative;
-            border: 1px solid white;
-            border-radius: 8px;
-            background-color: white;
-            padding: 10px;
-            padding-bottom: 30px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-                        
+        section .background-img {
+            opacity: 0.2;
         }
 
-        .card:hover {
+        .tools-container {
+            height: auto;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .tools {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            flex: 0 0 45%;
+        }
+
+        .home {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            text-align: center;
+        }
+        
+        .home .card {
+            align-items: center;
+            width: auto;
+            text-align: center;
+            position: relative;
+            font-size: 24px;
+            background-color: none;
+            border: 1px solid white;
+            border-radius: 8px;
+            margin-top: 20px;
+            margin-bottom: 0px;
+            padding: 10px 10px 20px 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;           
+        }
+
+        .home .card:hover {
             transform: translateY(-4px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+            background-color: #fcf3f3;
+            border: 2px solid #f4b1ad; /* red border */
+        }
+
+        .home .card h3 {
+            margin-bottom: 30px;
+        }
+           
+        .home .card img {
+            height: auto;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        .tools .card {
+            text-align: left;
+            position: relative;
+            border: 0px solid white;
+            border-radius: 8px;
+            background-color: rgb(244, 244, 244); /* inactive grey background */
+            padding: 10px 10px 20px 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            margin-left: -19px;
+            margin-bottom: 0px;
+            transition: all 0.3s ease;
+            transition: 0.3s ease;            
+        }
+
+        .tools .card:hover {
+            transform: translateY(-4px);
+            background-color: rgb(230, 230, 230); /* active grey background */
             box-shadow: 0 6px 12px rgba(0,0,0,0.08);
         }
 
-        footer {
-            background-color: #333333;
-            font-size: 10px;
-            font-weight: 700;
-            color: #ce5148;
-            text-align: center;
-            padding: 1px;
-            width: 100%;
+        .tools .card.active-card {
+            background-color: #fdf8f8;
+            border: 2px solid #f4b1ad; /* red border */
+        }
+
+        @media (max-width: 768px) {
+            .tools-container {
+                flex-direction: column;
+                flex-wrap: wrap;
+            }
+            .detail-card {
+                order: -1; /* Optional: place details above cards on mobile */
+                width: 100%;
+            }
+        }
+
+        /* === DETAIL CARD CONTENT STYLING === */
+        
+        /* Paragraph text inside the card */
+        .detail-card p {
+            font-size: 15px;
+            line-height: 1.5;
+            color: black;
+            font-weight: 400;
+        }
+
+        /* Unordered list inside detail card */
+        .detail-card ul, 
+        .detail-card li {
+            color: #000; /* bullet text color */
+            font-size: 14px;
+            line-height: 1.1;
+            margin-bottom: 2px;
+        }
+
+        .detail-card li::marker {
+            color: #b83c32; /* same red as your theme */
+            font-size: 18px; /* optional: slightly larger bullets */
+        }
+
+        /* Bold or highlighted text */
+        .detail-card strong {
+            color: black;
+            font-weight: 600;
+            margin-top: 15px;
+            display: inline-block;
         }
 
         .button-link {
@@ -157,8 +261,8 @@
             border-radius: 4px;
             cursor: pointer;
             position: absolute; 
-            bottom: 0;
-            right:0;
+            top: 10px;
+            right: 0;
         }
         
         .button-link:hover {
@@ -197,31 +301,6 @@
             text-align: center;
         }
 
-        .home {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            text-align: center;
-        }
-
-        .home .card {
-            align-items: center;
-            width: auto;
-            padding-top: 10px;
-            padding-bottom: 20px;
-            border: 1px solid white;
-            border-radius: 8px;
-            margin-top: 10px;
-            margin-bottom: 10px;
-            font-size: 24px;
-            background-color: white;
-        }
-        
-        .card img {
-            height: auto;
-            max-width: 100%;
-            object-fit: contain;
-        }
 
         ::placeholder {
             color:#d1d1d1;
@@ -238,7 +317,178 @@
             padding: 10px;
         }
 
+        footer {
+            background-color: #333333;
+            font-size: 8px;
+            font-weight: 500;
+            color: #ce5148;
+            text-align: center;
+            margin-top: 35px;
+            padding-top: 10px;
+            width: 100%;
+            height: 25px; 
+        }
+
+        html {
+            scroll-behavior: smooth;    
+        }
+
+        .detail-card {
+            text-align: left;
+            flex: 0 0 50%;
+            background-color: #fdf8f8; /* active light blue background */
+            border: 0px solid #b83c32;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 60px;
+            transition: all 0.3s ease;
+            height: 415px;
+        }
+            
+              
+        .detail-card h3 {
+            display: block;
+            width: 100%;
+            flex: 0 0 100%;
+            font-size: 22px;
+            font-weight: 700;
+            color: #b83c32;
+            margin: 0 0 15px 0;
+            text-align: left;
+        }
+
+        .detail-card .subtitle {
+            font-size: 16px;
+            color: #555;
+            margin-top: -10px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        /* Make DNA Sequence Analysis description use 3 columns */
+        /* Single-column structured list inside the analysis card */
+        /* --- Consistent nested list styles --- */
+        .detail-card ul {
+            list-style-type: disc; /* default bullet for first level */
+            padding-left: 20px;
+        }
+
+        .detail-card ul ul {
+            list-style-type: circle; /* nested lists use circle */
+            padding-left: 20px; /* indent slightly */
+        }
+
+        /* for ordered lists (like DNA Sequence Analysis) */
+        .detail-card ol {
+            list-style-type: circle; /* default for first level */
+            padding-left: 20px;
+        }
+
+        .detail-card ol ol {
+            list-style-type: lower-alpha; /* nested ordered lists use letters */
+            padding-left: 20px;
+        }
         
+        .detail-card .three-columns ul {
+            break-inside: avoid;
+            column-count: 2; /* force single column */
+            padding-left: 20px;
+            margin-bottom: 20px;
+            
+        }
+
+        .detail-card .three-columns li {
+            break-inside: avoid;
+            margin-bottom: 6px;
+            
+        }
+
+        .detail-card .three-columns ol {
+            break-inside: avoid;
+            margin-bottom: 6px;
+            
+        }
+
+        .detail-content.horizontal-layout {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .detail-content.horizontal-layout .description {
+            flex: 2;
+            }
+
+        .detail-content.vertical-layout {
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .detail-content.vertical-layout .image-container {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .detail-content.horizontal-layout .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .detail-content .description {
+            flex: 1;
+        }
+
+        .detail-content .image-container {
+            flex: 3;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .detail-card .image-container img {
+            max-height: 60%; /* or 60% of the card height */
+            width: auto;
+            object-fit: contain;
+        }
+
+        .detail-content img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+
+        .detail-content.vertical-layout. img {
+            max-width: 10%;
+            height: auto;
+            object-fit: contain;
+            margin-top: 10px;
+        }
+
+        .detail-content.vertical-layout .image-container img {
+            max-width: 100%;       /* Prevent horizontal overflow */
+            max-height: 200px;     /* Constrain vertical size */
+            height: auto;          /* Maintain aspect ratio */
+            width: auto;           /* Allow flexible width */
+            object-fit: contain;   /* Ensure the full image is visible */
+        }
+   
+
+        @media (max-width: 768px) {
+            .detail-content.horizontal-layout {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .detail-card .image-container img {
+                max-height: 180px;
+            }
+        }
+
 
     </style>
 </head>
@@ -254,9 +504,15 @@
     </header>
 
     <!-- Home Section -->
-    <section id="home" style="background-color:#fafafa; color:#2b2b2b">
-        <h1 style="margin-bottom:30px; font-size:40px;">Control your DNA synthesis!</h1>
-        <p class="pitch" style="font-size:20px; font-weight: 700;"> Internalize the synthesis process maximizing control, flexibility, and cost efficiency.</p>
+    <section id="home" style="background-color:#fafafa; color:#2b2b2b; border-radius: 8px; background-image: url('modern_lab.png');">
+        
+        <h1 style="margin-bottom:30px;">Advanced
+                <span style="color: #b83c32;">DNA Synthesis</span>
+                Solutions!
+        </h1>
+        <h2 class="pitch" style="font-size:30px;"> Maximize control, flexibility, time and cost.</h2>
+        <h2 style="font-size:30px; margin-bottom: 5px;">With Oligotk proprietary PLATFORM you will:</h2>
+        
         <div class="home"> 
             <div class="card">
                 <h3>Design oligos for assembly</h3>
@@ -271,60 +527,119 @@
                 <h3>Obtain Pooling Files</h3>
                 <img src="pooling.png" width="55%" height="55%" alt="Pooling">
             </div>  
-        </div>
-        
-        <p class="pitch">Optimize, synthesize, and analyze </p>
-        <p class="pitch">Your Own Way</p>
-    
-        
+        </div> 
     </section>
 
     <!-- Tools Section -->
-    <section id="tools" style="background-color:#f5f5f5; color: #333333">
+    <section id="tools" style= "color: #333333">
         <h2>Tools</h2>
-        <div class="tools">
-            <div class="card">
-                <h3>DNA Sequence analysis</h3>
-                <p style="font-style: italic">Basic Analysis</p>
-                 <p>  ----    </p>
-                 <p>%GC plot / Tm / DeltaG</p>
-                <p>Reverse Complement</p>
-                <p>  ----    </p>
-                <a href="https://www.oligotk.com/Analysis" class="button-link">Free tool</a>
+        <div class="tools-container">
+            <div class="tools">
+                <div class="card" 
+                    data-title="DNA Sequence Analysis" 
+                    data-image="Complexity_visual_analysis.png"
+                    data-description="
+                    <ul>
+                        <li><strong>Attributes</strong> 
+                            <ol>
+                                <li>%GC</li>
+                                <li>Tm</li>
+                                <li>ΔG</li>                     
+                                <li>Homopolymers</li>
+                                <li>Repetitive sequences</li>
+                                <li>Tandem repeats</li>
+                            </ol>
+                        </li>
+                        
+                        <li><strong>Functions:</strong>
+                            <ol>
+                                <li>Reverse</li>
+                                <li>Reverse Complement</li>
+                            </ol>
+                        </li>
+                    </ul>
+                    ">
+
+                    <h3>DNA Sequence analysis</h3>
+                    <p>Advanced analysis tools for DNA fragment characterization and optimization.</p>
+                    <a href="https://www.oligotk.com/Analysis" class="button-link">Free tool</a>
+                </div>
+                
+                <div class="card"
+                    data-title="Assembly Fragment Designer"
+                    data-subtitle="Generate DNA fragments with adjustable overlaps and lengths and Optimize your assembly methodology."
+                    data-image="Fragmentation_results.png"
+                    data-description="
+                    <ul>
+                        <li><strong>Gibson Assembly</strong></li>
+
+                        <li><strong>Golden Gate Cloning</strong></li>
+                        
+                        <li><strong>Overlap Extension</strong></li>
+                    </ul>
+                    ">
+                    <h3>Assembly Fragment Designer</h3>
+                    <p>Efficient fragmenter designer tool for long DNA constructs.</p>
+                    <a href="https://www.oligotk.com/GA_Fragmenter" class="button-link">Free tool</a>
+                </div>
+                
+                <div class="card"
+                    data-title="Oligo Designer"
+                    data-subtitle="Design oligos for DNA fragment synthesis. Supports simple and complex slicing modes."
+                    data-image="Oligos_colors.png"
+                    data-description="
+                    <ul>
+                        <li><strong>Oligo designed</strong> 
+                            <ul>
+                                <li>Simple</li>
+                                <li>Optimized</li>
+                            </ul>
+                        </li>
+
+                        <li><strong>Primer design</strong></li>
+                        
+                        <li><strong>Reutilization methodology</strong></li>
+
+                    </ul>">
+
+                    <h3>Oligo Designer</h3>
+                    <p>Custom oligonucleotide sequences optimized for your specific assembly requirements.</p> 
+                    <a href="#contact" class="button-link">Contact</a>
+                </div>
+                
+                <div class="card" 
+                    data-title="Variant Library Designer" 
+                    data-subtitle="Design oligos for library synthesis with Direct or Optimal strategies depending on mutation density."
+                    data-image="Sat_lib.png"
+                    data-description="
+                    <ul>
+                        <li><strong>Saturation Library</strong></li>
+
+                        <li><strong>Site-directed Variants</strong></li>
+                        
+                        <li><strong>Combinatorial Libraries</strong></li>
+                    </ul>
+                    ">
+                    <h3>Variant Library Designer</h3>
+                    <p>Comprehensive DNA variant library design for directed evolution and screening.</p>
+                    <a href="#contact" class="button-link">Contact</a>
+                </div>   
             </div>
-            
-            <div class="card">
-                <h3>Assembly Fragment Designer</h3>
-                <p>Generate Gibson Assembly DNA fragments
-                <p>Utilize different lengths and overlaps for your synthesis</p>
-                <a href="https://www.oligotk.com/GA_Fragmenter" class="button-link">Free tool</a>
-            </div>
-            
-            <div class="card">
-                <h3>Oligo Designer</h3>
-                <p>Design oligos for fragment synthesis</p> 
-                <p>Utilize a Simple or Complex design according to your specifications</p>
+        
+            <!-- RIGHT COLUMN -->
+            <div class="detail-card" id="detail-card">
                 <a href="#contact" class="button-link">Contact</a>
             </div>
-              
-            <div class="card">
-                <h3>Variant Library Designer</h3>
-                <p>Design oligos for library synthesis</p>
-                <p>Utilize a Direct or Optimal design according to number and location of mutations</p>
-                <a href="#contact" class="button-link">Contact</a>
-            </div>
-          
-                  
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" style="background-color:#eaeef2; color: #1e1e1e">
+    <section id="contact" style="background-color:#eaeef2; border-radius: 10px; color: #1e1e1e">
         <div class="flex-box">
         
             <div class="grid-box">
                     <h2 style="padding-top: 70px;">Contact Us</h2>
-                    <p>info@oligotk.com</p>
+                    <h4 style="text-align: center;">info@oligotk.com</h4>
             </div>
         
             <div class="grid-box">
@@ -333,12 +648,12 @@
                     <h4>Name</h4>
                     <input type="text" name="name" placeholder="Your Name" required>
                     <h4>Insitution</h4>
-                    <input type="institution" name="institution" placeholder="Institution Name" required>
+                    <input type="text" name="institution" placeholder="Institution Name" required>
                     <h4>Email</h4>
                     <input type="email" name="email" placeholder="Your Insitutional Email" required>
                     <h4>Message</h4>
                     <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
-                    <button type="submit">Send Message</button>
+                    <button type="submit" style="margin-bottom:20px;">Send Message</button>
                     <input type="text" name="_honey" style="display:none">
                 </form>
             </div>
@@ -350,4 +665,71 @@
         <p>© 2024 Oligotk All rights reserved.</p>
     </footer>
 </body>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+        const cards = document.querySelectorAll(".tools .card");
+        const detailCard = document.getElementById("detail-card");
+
+        // --- Default active card setup ---
+        const defaultCard = document.querySelector(
+            '.card[data-title="DNA Sequence Analysis"]'
+        );
+        if (defaultCard) {
+            defaultCard.classList.add("active-card");
+            const title = defaultCard.getAttribute("data-title");
+            const subtitle = defaultCard.getAttribute("data-subtitle") || "";
+            const description = defaultCard.getAttribute("data-description");
+            const image = defaultCard.getAttribute("data-image");
+            detailCard.innerHTML = `
+            <h3>${title}</h3>
+            ${subtitle ? `<h4 class="subtitle">${subtitle}</h4>` : ""}
+            <div class="detail-content vertical-layout">
+                <div class="description three-columns">${description}</div>
+                <div class="image-container">
+                    <img src="${image}" alt="${title}" />
+                </div>
+            </div>
+            `;
+        }
+
+        // --- Click behavior for all cards ---
+        cards.forEach(card => {
+          card.addEventListener("click", () => {
+            cards.forEach(c => c.classList.remove("active-card"));
+            card.classList.add("active-card");
+
+            const title = card.getAttribute("data-title");
+            const subtitle = card.getAttribute("data-subtitle") || "";
+            const description = card.getAttribute("data-description");
+            const image = card.getAttribute("data-image");
+
+            let layoutClass = 'horizontal-layout';
+            if (title === 'DNA Sequence Analysis') {
+                layoutClass = 'vertical-layout';
+            }
+
+            // Add a smooth fade transition
+            detailCard.style.transition = "opacity 0.3s ease";
+            detailCard.style.opacity = 0;
+            setTimeout(() => {
+                detailCard.innerHTML = `
+                <h3>${title}</h3>
+                ${subtitle ? `<h4 class="subtitle">${subtitle}</h4>` : ""}
+                <div class="detail-content ${layoutClass}">
+                    <div class="description ${title === 'DNA Sequence Analysis' ? 'three-columns' : ''}">
+                        ${description}
+                    </div>
+                    <div class="image-container">
+                        <img src="${image}" alt="${title}" />
+                    </div>
+                </div>
+                `;
+                detailCard.style.opacity = 1;
+            }, 200);
+            });
+        });
+        });
+    </script>
+
 </html>
